@@ -1,0 +1,17 @@
+/* div.jumbotron ul {
+    width:50%;
+    height:50%;
+    left:25%;
+    top:25%;
+    background: black;
+    color: white;
+    position: absolute;
+
+} */
+.btn-success {
+    margin-left: 20px;
+}
+
+.correct-answer {
+    border: 2px solid green;
+}

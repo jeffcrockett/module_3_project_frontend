@@ -12,6 +12,6 @@
     margin-left: 20px;
 }
 
-.correct-answer {
-    border: 2px solid green;
+button.correct-answer {
+    border: 5px solid green;
 }

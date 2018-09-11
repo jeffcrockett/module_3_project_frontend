@@ -23,12 +23,12 @@ class App {
 
     showAnswer(event) {
     if (event.target.dataset.correct === 'true') {
-        event.target.innerHTML += `<div class="alert alert-success">        
+        event.target.innerHTML += `<div class="correct-answer alert alert-success">        
                 <strong>Well done!</strong></div>`
 
     }
     else {
-        event.target.innerHTML += `<div class="alert alert-danger">        
+        event.target.innerHTML += `<div class="incorrect-answer alert alert-danger">        
                 <strong>Wrong!</strong></div>`
         event.target.parentElement.querySelectorAll('li').forEach(li => {
             if (li.dataset.correct === 'true') {

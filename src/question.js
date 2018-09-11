@@ -8,23 +8,23 @@ class Question {
     }
 
     render() {
-        let app = new App();
+        // let app = new App();
         questionsContainer.innerHTML = '';
-        questionsContainer.innerHTML += `<ul>${this.content}
-    ${this.answers.randomize().map(answer => `<li data-correct="${answer.correct}" >${answer.content}</li>`).join('')}
-    </ul>`
-        questionsContainer.querySelectorAll('li').forEach(li => {
-            li.addEventListener('click', app.showAnswer)
+        questionsContainer.innerHTML += `<ul>${this.content}<br>
+    ${this.answers.randomize().map(answer => `<br><button class='btn btn-light answer-choice' data-correct="${answer.correct}" >${answer.content}</button><br>`).join('')}
+    </ul><button id="next-question" type="button" class="btn btn-secondary">Next</button>`
+        questionsContainer.querySelectorAll('.answer-choice').forEach(btn => {
+            btn.addEventListener('click', clickAnswer)
         })
     }
 
-    addClickEvents() {
-    let app = new App();
-    this.answers.forEach(answer => {
-        answer.addEventListener('click', app.showAnswer)
-    })
-}
-    
+//     addClickEvents() {
+//     let app = new App();
+//     this.answers.forEach(answer => {
+//         answer.addEventListener('click', app.showAnswer)
+//     })
+// }
+
 }
 
 Question.all = [];

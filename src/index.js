@@ -1,11 +1,22 @@
 const BASE_URL = 'http://localhost:3000/api/v1'
 let questionsContainer;
+let clickAnswer
+let answerClicked
+let numberCorrect
+let numberIncorrect
+let app
+let interval
 
 document.addEventListener('DOMContentLoaded', () => {
-    const app = new App();
+    app = new App();
     questionsContainer = document.getElementById('questions-container');
+    clickAnswer = app.showAnswer
+    answerClicked = false
+    numberCorrect = 0
+    numberIncorrect = 0
+    gameOver = false
     console.log('dom content loaded')
-    app.adapter.loadQuestion(app.questionNumber).then(q => app.createQAndA(q));
+    app.loadFrontPage()
 })
 
 

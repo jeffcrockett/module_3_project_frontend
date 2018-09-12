@@ -1,7 +1,7 @@
 class App {
     constructor() {
         this.adapter = new Adapter();
-        this.questionNumber = 12;
+        this.questionNumber = 13;
         this.startGame = this.startGame.bind(this);
         this.getNextQuestion = this.getNextQuestion.bind(this);
         this.timesUp = this.timesUp.bind(this);
@@ -20,7 +20,6 @@ class App {
       document.querySelector('#create-question').addEventListener('click', app.renderNewForm)
       document.querySelector('#start-game').addEventListener('click', app.startGame);
       document.querySelector('#edit-questions').addEventListener('click', app.editQuestions)
-      // debugger
     }
 
     editQuestions() {
@@ -107,7 +106,6 @@ class App {
         const incorrectAnswersValues = radioButtons.filter(btn => !btn.checked).map(btn => btn.previousElementSibling.value);
         console.log('correct answer is', correctAnswer);
         console.log('incorrect answers are', incorrectAnswers);
-        // console.log(radioButtons);
         correctAnswerObject[correctAnswerValue] = correctAnswer.id.split('-')[1]
         incorrectAnswers.forEach(answer => {
             incorrectAnswersObject[answer.value] = answer.id.split('-')[1];
@@ -125,7 +123,6 @@ class App {
             let answer = new Answer(a.id, a.content, a.correct, question);
         })
         question.renderEditable()
-        // debugger;
     }
 
     someFunction() {
@@ -154,18 +151,15 @@ class App {
         </form><hr>
         <button id="back-to-main">Back</button>
         `
-        // debugger;
         document.querySelector('#new-question-form').addEventListener('submit', this.submitQuestion)
         document.querySelector('#back-to-main').addEventListener('click', this.loadFrontPage)
     }
 
     submitQuestion(event) {
-        // debugger;
         event.preventDefault();
         let form = event.target;
         let newQuestionContent = form.querySelector('textarea').value;
         let newCorrectAnswer = form.querySelector('#new-correct-answer').value;
-        // debugger;
         let newIncorrectAnswers = Array.from(form.querySelectorAll('.new-incorrect-answer')).map(answer => answer.value);
         let difficulty = form.querySelector('select').value;
         console.log(newQuestionContent, newCorrectAnswer, newIncorrectAnswers);
@@ -176,11 +170,11 @@ class App {
     }
 
     startGame() {
-      document.getElementById('game-over').innerHTML = "";
-      document.querySelector('#number-correct').innerHTML = "";
-      document.querySelector('#number-incorrect').innerHTML = "";
       numberCorrect = 0
       numberIncorrect = 0
+      document.getElementById('game-over').innerHTML = "";
+      document.querySelector('#number-correct').innerHTML = `${numberCorrect} Correct`;
+      document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`;
       this.adapter.loadQuestion(this.questionNumber).then(q => this.createQAndA(q))
     }
 
@@ -200,7 +194,9 @@ class App {
       let count = 10;
       timerContainer.innerHTML = `<div>${count}</div>`
       interval = setInterval(() => {
-        timerContainer.querySelector('div').innerHTML = --count
+        if (timerContainer.querySelector('div').innerHTML) {
+          timerContainer.querySelector('div').innerHTML = --count
+        }
         if (answerClicked === true || count === 0) {
           clearInterval(interval);
           this.timesUp();
@@ -212,6 +208,8 @@ class App {
       if (answerClicked === true) {
         document.querySelector('#timer-container').innerHTML = "";
       } else {
+        numberIncorrect += 1
+        document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`;
         document.querySelector('#timer-container').innerHTML = "Time's up!";
       }
       document.querySelectorAll('.answer-choice').forEach(btn => {

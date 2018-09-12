@@ -1,7 +1,7 @@
 class App {
     constructor() {
         this.adapter = new Adapter();
-        this.questionNumber = 13;
+        this.questionNumber = 52;
         this.startGame = this.startGame.bind(this);
         this.getNextQuestion = this.getNextQuestion.bind(this);
         this.timesUp = this.timesUp.bind(this);
@@ -14,7 +14,17 @@ class App {
     loadFrontPage() {
       questionsContainer.innerHTML = ""
       questionsContainer.innerHTML = `<h1>Welcome to Trivia Something!</h1>
-      <button id='start-game'>Start Game</button>
+      <h3>Select a category to play</h3>
+      <div>
+      <select>
+        <option value="science">Science</option>
+        <option value="books">Books</option>
+        <option value="film">Film</option>
+        <option value="history">History</option>
+        <option value="sports">Sports</option>
+      </select>
+      <button id='start-game'>Start Game</button><hr>
+      </div>
       <button id='create-question'>Make new question</button>
       <button id='edit-questions'>Edit questions</button>`
       document.querySelector('#create-question').addEventListener('click', app.renderNewForm)
@@ -169,7 +179,10 @@ class App {
 
     }
 
-    startGame() {
+    startGame(event) {
+      let categoryName = event.target.previousElementSibling.value
+      // NEED TO FIGURE OUT HOW TO HANDLE CATEGORY
+      // FETCH TO CATEGORY - NEED ID - HOW?????
       numberCorrect = 0
       numberIncorrect = 0
       document.getElementById('game-over').innerHTML = "";
@@ -194,7 +207,7 @@ class App {
       let count = 10;
       timerContainer.innerHTML = `<div>${count}</div>`
       interval = setInterval(() => {
-        if (timerContainer.querySelector('div').innerHTML) {
+        if (timerContainer.querySelector('div')) {
           timerContainer.querySelector('div').innerHTML = --count
         }
         if (answerClicked === true || count === 0) {

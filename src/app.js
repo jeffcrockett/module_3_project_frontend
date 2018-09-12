@@ -1,7 +1,7 @@
 class App {
     constructor() {
         this.adapter = new Adapter();
-        this.questionNumber = 1;
+        this.questionNumber = 12;
         this.startGame = this.startGame.bind(this);
         this.getNextQuestion = this.getNextQuestion.bind(this);
         this.timesUp = this.timesUp.bind(this);
@@ -16,10 +16,11 @@ class App {
       questionsContainer.innerHTML = `<h1>Welcome to Trivia Something!</h1>
       <button id='start-game'>Start Game</button>
       <button id='create-question'>Make new question</button>
-       <button id='edit-questions'>Edit questions</button>`
-      document.querySelector('#create-question').addEventListener('click', this.renderNewForm)
-      document.querySelector('#start-game').addEventListener('click', this.startGame);
-      document.querySelector('#edit-questions').addEventListener('click', this.editQuestions)
+      <button id='edit-questions'>Edit questions</button>`
+      document.querySelector('#create-question').addEventListener('click', app.renderNewForm)
+      document.querySelector('#start-game').addEventListener('click', app.startGame);
+      document.querySelector('#edit-questions').addEventListener('click', app.editQuestions)
+      // debugger
     }
 
     editQuestions() {
@@ -28,21 +29,29 @@ class App {
         console.log('editing questions...');
         questionsContainer.innerHTML = "";
         this.adapter.loadQuestions(startingIndex, endingIndex);
-
     }
 
     renderEditPage(questions) {
+        questionsContainer.innerHTML += `<button id="back">Back</button><hr>`
         questions.forEach(question => {
             this.renderEditableQuestion(question);
         })
-        // debugger;
+        questionsContainer.innerHTML += `<hr><button id="get-more-questions">Get more questions</button>`
+        // debugger
+        document.querySelector('#back').addEventListener('click', this.loadFrontPage)
         document.querySelectorAll(`.edit-button`).forEach(e => {
-        e.addEventListener('click', this.renderEditForm)});
+        e.addEventListener('click', app.renderEditForm)});
         document.querySelectorAll('.delete-button').forEach(e => {
-            e.addEventListener('click', this.adapter.deleteQuestion);
+            e.addEventListener('click', app.adapter.deleteQuestion);
+        })
+        document.querySelector('#get-more-questions').addEventListener('click', () => {
+          startingIndex += 10
+          endingIndex += 10
+          questionsContainer.innerHTML = ""
+          app.adapter.loadQuestions(startingIndex, endingIndex)
         })
     }
-    
+
     renderEditForm(event) {
         const div = event.target.parentElement;
         const questionContent = event.target.parentElement.querySelector('span').innerText;
@@ -78,7 +87,7 @@ class App {
         </div>
         <br>
         <input type="submit">
-        </form>`   
+        </form>`
         document.querySelector(`#edit-${div.id}`).addEventListener('submit', app.handleEditFormSubmit);
     }
 
@@ -88,7 +97,7 @@ class App {
         let questionObject = {};
         let correctAnswerObject = {};
         let incorrectAnswersObject = {};
-        const questionContent = event.target.querySelector('#edit-question-content').value 
+        const questionContent = event.target.querySelector('#edit-question-content').value
         let questionId = event.target.parentElement.id.split('-')[1]
         questionObject[questionContent] = questionId;
         const radioButtons = Array.from(event.target.querySelectorAll('input')).filter(inp => inp.name === 'correct');
@@ -108,12 +117,7 @@ class App {
         console.log(incorrectAnswersObject);
         const data = [questionObject, correctAnswerObject, incorrectAnswersObject, questionDiv];
         app.adapter.patchQuestion(data);
-
-        
-
     }
-
-
 
     renderEditableQuestion(q) {
         let question = new Question(q.id, q.content, q.difficulty);
@@ -122,7 +126,6 @@ class App {
         })
         question.renderEditable()
         // debugger;
-
     }
 
     someFunction() {
@@ -135,23 +138,25 @@ class App {
         questionsContainer.innerHTML += `
         <h1>Create a new trivia question</h1>
         <form id="new-question-form">
-        Question: <br><textarea rows="2" cols="50" id="new-question-content"></textarea><br>
+        Question: <br><textarea rows="2" cols="50" id="new-question-content" required></textarea><br>
 
         Correct Answer: <br><input type="text" id="new-correct-answer"><br>
         Incorrect Answers: <br>
-        <input type="text" class="new-incorrect-answer"><br>
-        <input type="text" class="new-incorrect-answer"><br>
-        <input type="text" class="new-incorrect-answer"><br>
-        Difficulty: <select name="difficulty">
+        <input type="text" class="new-incorrect-answer" required><br>
+        <input type="text" class="new-incorrect-answer" required><br>
+        <input type="text" class="new-incorrect-answer" required><br>
+        Difficulty: <select name="difficulty" required>
         <option value="easy">Easy</option>
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
         </select>
         <input id="submit-question" type="submit">
-        </form>
+        </form><hr>
+        <button id="back-to-main">Back</button>
         `
         // debugger;
         document.querySelector('#new-question-form').addEventListener('submit', this.submitQuestion)
+        document.querySelector('#back-to-main').addEventListener('click', this.loadFrontPage)
     }
 
     submitQuestion(event) {

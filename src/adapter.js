@@ -39,16 +39,16 @@ class Adapter {
             }).then(res => res.json()).then(json => console.log(json));
         })
         app.loadFrontPage();
-       
+
     }
 
-        loadQuestions(number1, number2) {
-            return fetch(`${BASE_URL}/questions`)
-                .then(res => res.json())
-                .then(json => {
-                    let questions = json.slice(number1, number2);
-                    app.renderEditPage(questions);
-                })
+    loadQuestions(number1, number2) {
+        return fetch(`${BASE_URL}/questions`)
+            .then(res => res.json())
+            .then(json => {
+                let questions = json.slice(number1, number2);
+                app.renderEditPage(questions);
+            })
     }
 
     patchQuestion(data) {
@@ -61,7 +61,7 @@ class Adapter {
         console.log({ content: questionContent })
         console.log(questionId);
         fetch(`${BASE_URL}/questions/${questionId}/`, {
-            method: 'PATCH', 
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -115,7 +115,7 @@ class Adapter {
                 },
                 body: JSON.stringify({ content: answer[0], correct: false })
         }).then(res => res.json()).then(json => {
-            console.log(json);        
+            console.log(json);
             // debugger;
         });
     })

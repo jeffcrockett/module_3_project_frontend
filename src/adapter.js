@@ -38,6 +38,7 @@ class Adapter {
                 body: JSON.stringify(dData)
             }).then(res => res.json()).then(json => console.log(json));
         })
+        app.loadFrontPage();
        
     }
 
@@ -117,8 +118,30 @@ class Adapter {
             console.log(json);        
             // debugger;
         });
-        
-
     })
 }
+
+    deleteQuestion(event) {
+        let questionId = event.target.dataset.questionId;
+        fetch(`${BASE_URL}/questions/${questionId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }).then(res => res.json()).then(json => {
+            console.log(json);
+            json.answers.forEach(answer => {
+                fetch(`${BASE_URL}/answers/${answer.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                }).then(res => res.json()).then(json => console.log(json))
+            })
+            let questionDiv = document.querySelector(`#question-${json.id}`);
+            questionDiv.remove();
+        });
+    }
 }

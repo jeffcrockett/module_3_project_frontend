@@ -38,6 +38,9 @@ class App {
         // debugger;
         document.querySelectorAll(`.edit-button`).forEach(e => {
         e.addEventListener('click', this.renderEditForm)});
+        document.querySelectorAll('.delete-button').forEach(e => {
+            e.addEventListener('click', this.adapter.deleteQuestion);
+        })
     }
     
     renderEditForm(event) {

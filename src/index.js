@@ -1,11 +1,14 @@
 const BASE_URL = 'http://localhost:3000/api/v1'
 let questionsContainer;
-let clickAnswer
-let answerClicked
-let numberCorrect
-let numberIncorrect
-let app
-let interval
+let clickAnswer;
+let answerClicked;
+let numberCorrect;
+let numberIncorrect;
+let app;
+let interval;
+let startingIndex;
+let endingIndex;
+
 
 document.addEventListener('DOMContentLoaded', () => {
     app = new App();

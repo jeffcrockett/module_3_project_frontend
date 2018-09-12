@@ -8,15 +8,122 @@ class App {
         this.endGame = this.endGame.bind(this);
         this.renderNewForm = this.renderNewForm.bind(this);
         this.submitQuestion = this.submitQuestion.bind(this);
+        this.editQuestions = this.editQuestions.bind(this);
     }
 
     loadFrontPage() {
       questionsContainer.innerHTML = ""
       questionsContainer.innerHTML = `<h1>Welcome to Trivia Something!</h1>
       <button id='start-game'>Start Game</button>
-      <button id='create-question'>Make new question</button>`
+      <button id='create-question'>Make new question</button>
+       <button id='edit-questions'>Edit questions</button>`
       document.querySelector('#create-question').addEventListener('click', this.renderNewForm)
       document.querySelector('#start-game').addEventListener('click', this.startGame);
+      document.querySelector('#edit-questions').addEventListener('click', this.editQuestions)
+    }
+
+    editQuestions() {
+        startingIndex = 0;
+        endingIndex = 10;
+        console.log('editing questions...');
+        questionsContainer.innerHTML = "";
+        this.adapter.loadQuestions(startingIndex, endingIndex);
+
+    }
+
+    renderEditPage(questions) {
+        questions.forEach(question => {
+            this.renderEditableQuestion(question);
+        })
+        // debugger;
+        document.querySelectorAll(`.edit-button`).forEach(e => {
+        e.addEventListener('click', this.renderEditForm)});
+    }
+    
+    renderEditForm(event) {
+        const div = event.target.parentElement;
+        const questionContent = event.target.parentElement.querySelector('span').innerText;
+        console.log(event.target.parentElement.querySelectorAll('.answer-choice'))
+        const answers = Array.from(event.target.parentElement.querySelectorAll('.answer-choice')).map(answer => answer.innerText)
+        const answerIds = Array.from(event.target.parentElement.querySelectorAll('.answer-choice')).map(answer => (answer.id.split('-')[1]))
+        console.log(questionContent);
+        console.log(answers);
+        console.log(answerIds);
+        div.innerHTML = '';
+        div.innerHTML += `<form id="edit-${div.id}">
+        <label>Question: </label><br>
+        <input id="edit-question-content" type="text" size="100" value="${questionContent}"><br>
+        <label>Answers: (select correct)</label><br>
+        <div class="edit-answer">
+        <input id="answer-${answerIds[0]}-text" type="text" value="${answers[0]}">
+        <input id="answer-${answerIds[0]}"value="${answers[0]}" name="correct" type="radio" checked>
+        </div>
+        <br>
+        <div class="edit-answer">
+        <input id="answer-${answerIds[1]}-text"type="text" value="${answers[1]}">
+        <input id="answer-${answerIds[1]}" value="${answers[1]}" name="correct" type="radio">
+        </div>
+        <br>
+        <div class="edit-answer">
+        <input id="answer-${answerIds[2]}-text" type="text" value="${answers[2]}">
+        <input id="answer-${answerIds[2]}" value="${answers[2]}" name="correct" type="radio">
+        </div>
+        <br>
+        <div class="edit-answer">
+        <input id="answer-${answerIds[3]}-text" type="text" value="${answers[3]}">
+        <input id="answer-${answerIds[3]}" value="${answers[3]}"name="correct" type="radio">
+        </div>
+        <br>
+        <input type="submit">
+        </form>`   
+        document.querySelector(`#edit-${div.id}`).addEventListener('submit', app.handleEditFormSubmit);
+    }
+
+    handleEditFormSubmit(event) {
+        event.preventDefault();
+        let questionDiv = event.target.parentElement;
+        let questionObject = {};
+        let correctAnswerObject = {};
+        let incorrectAnswersObject = {};
+        const questionContent = event.target.querySelector('#edit-question-content').value 
+        let questionId = event.target.parentElement.id.split('-')[1]
+        questionObject[questionContent] = questionId;
+        const radioButtons = Array.from(event.target.querySelectorAll('input')).filter(inp => inp.name === 'correct');
+        const correctAnswer = radioButtons.find(btn => btn.checked).previousElementSibling
+        const correctAnswerValue = radioButtons.find(btn => btn.checked).previousElementSibling.value
+        const incorrectAnswers = radioButtons.filter(btn => !btn.checked).map(btn => btn.previousElementSibling);
+        const incorrectAnswersValues = radioButtons.filter(btn => !btn.checked).map(btn => btn.previousElementSibling.value);
+        console.log('correct answer is', correctAnswer);
+        console.log('incorrect answers are', incorrectAnswers);
+        // console.log(radioButtons);
+        correctAnswerObject[correctAnswerValue] = correctAnswer.id.split('-')[1]
+        incorrectAnswers.forEach(answer => {
+            incorrectAnswersObject[answer.value] = answer.id.split('-')[1];
+        })
+        console.log(questionObject);
+        console.log(correctAnswerObject);
+        console.log(incorrectAnswersObject);
+        const data = [questionObject, correctAnswerObject, incorrectAnswersObject, questionDiv];
+        app.adapter.patchQuestion(data);
+
+        
+
+    }
+
+
+
+    renderEditableQuestion(q) {
+        let question = new Question(q.id, q.content, q.difficulty);
+        q.answers.forEach(a => {
+            let answer = new Answer(a.id, a.content, a.correct, question);
+        })
+        question.renderEditable()
+        // debugger;
+
+    }
+
+    someFunction() {
+        console.log('clicked');
     }
 
     renderNewForm() {
@@ -69,8 +176,9 @@ class App {
       this.adapter.loadQuestion(this.questionNumber).then(q => this.createQAndA(q))
     }
 
+
     createQAndA(q) {
-        const question = new Question(q.id, q.content, q.difficulty);
+        let question = new Question(q.id, q.content, q.difficulty);
         q.answers.forEach(a => {
             let answer = new Answer(a.id, a.content, a.correct, question);
         })

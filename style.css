@@ -12,8 +12,25 @@
     margin-left: 20px;
 }
 
+.question-div {
+    border: 1px solid black;
+    margin-bottom: 25px;
+    padding: 15px;
+}
+
 div.jumbotron {
-    background: khaki;
+    background: turquoise;
+}
+
+div#game-over {
+    position: fixed;
+    margin-top: 20%;
+    margin-left: 14%;
+    background: hotpink;
+    font-size: 30px;
+    padding: 24px;
+    z-index: 1;
+    border: 11px solid black;
 }
 
 button.correct-answer {

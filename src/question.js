@@ -22,15 +22,15 @@ class Question {
         if(div) {
             div.innerHTML = '';
             div.innerHTML += `<div id="question-${this.id}"class="question-div"><span>${this.content}</span>
-        <button id="edit-question-${this.id}" data-question-id="${this.id}" class="edit-button">Edit</button>
-        <button data-question-id="${this.id}" class="delete-button">Delete</button><br>
+        <button id="edit-question-${this.id}" data-question-id="${this.id}" class="btn edit-button">Edit</button>
+        <button data-question-id="${this.id}" class="btn delete-button">Delete</button><br>
     ${this.answers.map(answer => `<br><button id="answer-${answer.id}" class='btn btn-dark answer-choice' data-correct="${answer.correct}" >${answer.content}</button><br>`).join('')}
     </div>`
         }
         else {
         questionsContainer.innerHTML += `<div id="question-${this.id}"class="question-div"><span>${this.content}</span>
-        <button id="edit-question-${this.id}" data-question-id="${this.id}" class="edit-button">Edit</button>
-        <button data-question-id="${this.id}" class="delete-button">Delete</button><br>
+        <button id="edit-question-${this.id}" data-question-id="${this.id}" class="btn edit-button">Edit</button>
+        <button data-question-id="${this.id}" class="btn delete-button">Delete</button><br>
     ${this.answers.map(answer => `<br><button id="answer-${answer.id}" class='btn btn-dark answer-choice' data-correct="${answer.correct}" >${answer.content}</button><br>`).join('')}
     </div>`
         }

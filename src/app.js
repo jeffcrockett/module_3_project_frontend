@@ -13,6 +13,7 @@ class App {
 
     loadFrontPage() {
         console.log(categoriesObject);
+        document.querySelector('#game-over').style.opacity = '0';
         document.querySelector('#game-over').innerHTML = '';
         document.querySelector('#timer-container').innerHTML = '';
         document.querySelector('#number-correct').innerHTML = '';
@@ -35,7 +36,7 @@ class App {
         <option value="television">Television</option>
         <option value="video games">Video games</option>
       </select>
-      <button id='start-game'>Start Game</button><hr>
+      <button class='btn' id='start-game'>Start Game</button><hr>
       </div>
       <button class="btn" id='create-question'>Make new question</button>
       <button class="btn" id='edit-questions'>Edit questions</button>`
@@ -53,11 +54,11 @@ class App {
     }
 
     renderEditPage(questions) {
-        questionsContainer.innerHTML += `<button id="back">Back</button><hr>`
+        questionsContainer.innerHTML += `<button class='btn' id="back">Back</button><hr>`
         questions.forEach(question => {
             this.renderEditableQuestion(question);
         })
-        questionsContainer.innerHTML += `<hr><button id="get-more-questions">Get more questions</button>`
+        questionsContainer.innerHTML += `<hr><button class='btn' id="get-more-questions">Get more questions</button>`
         // debugger
         document.querySelector('#back').addEventListener('click', this.loadFrontPage)
         document.querySelectorAll(`.edit-button`).forEach(e => {
@@ -107,7 +108,7 @@ class App {
         <input id="answer-${answerIds[3]}" value="${answers[3]}"name="correct" type="radio">
         </div>
         <br>
-        <input type="submit">
+        <input class="btn" type="submit">
         </form>`
         document.querySelector(`#edit-${div.id}`).addEventListener('submit', app.handleEditFormSubmit);
     }
@@ -183,7 +184,7 @@ class App {
         </select>
         <input id="submit-question" type="submit">
         </form><hr>
-        <button id="back-to-main">Back</button>
+        <button class='btn' id="back-to-main">Back</button>
         `
         document.querySelector('#new-question-form').addEventListener('submit', this.submitQuestion)
         document.querySelector('#back-to-main').addEventListener('click', this.loadFrontPage)
@@ -214,6 +215,8 @@ class App {
     }
 
     startGame(event) {
+      document.querySelector('#game-over').style.opacity = '0';
+
       questionsArray = [];
       let categoryName = event.target.previousElementSibling.value;
       app.adapter.fetchCategory(categoryName);
@@ -318,6 +321,7 @@ class App {
     }
 
     endGame() {
+        document.querySelector('#game-over').style.opacity = '1';
       clearInterval(interval)
       if(numberCorrect > highScore) {
           highScore = numberCorrect;
@@ -338,8 +342,8 @@ class App {
         <option value="television">Television</option>
         <option value="video games">Video games</option>
       </select>
-      <button id="play-again">Play again</button>
-      <button id="main-page">Main page</button>
+      <button class='btn' id="play-again">Play again</button>
+      <button class='btn' id="main-page">Main page</button>
       </div>
       `
       document.querySelectorAll('.answer-choice').forEach(btn => {

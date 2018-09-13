@@ -12,11 +12,24 @@
     margin-left: 20px;
 }
 
+div.jumbotron {
+    background: khaki;
+}
+
 button.correct-answer {
     border: 5px solid green;
 }
 
-#high-score {
+#high-score, #timer-container {
     float: right;
     margin-right: 100px;
 }
+
+#timer-container {
+    font-size: x-large;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+
+

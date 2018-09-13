@@ -10,10 +10,13 @@ let startingIndex;
 let endingIndex;
 let highScore = 0;
 let questionsArray = [];
+let categoriesObject = {};
 
 
 document.addEventListener('DOMContentLoaded', () => {
     app = new App();
+    app.populateCategories();
+
     questionsContainer = document.getElementById('questions-container');
     clickAnswer = app.showAnswer
     answerClicked = false
@@ -36,4 +39,8 @@ Array.prototype.randomize = function() {
         this[i] = t;
     }
     return this;
+}
+
+String.prototype.capitalize = function() {
+    return `${this[0].toUpperCase()}${this.slice(1).toLowerCase()}`
 }

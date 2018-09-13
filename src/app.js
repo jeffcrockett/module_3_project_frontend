@@ -12,21 +12,33 @@ class App {
     }
 
     loadFrontPage() {
+        console.log(categoriesObject);
+        document.querySelector('#game-over').innerHTML = '';
+        document.querySelector('#timer-container').innerHTML = '';
+        document.querySelector('#number-correct').innerHTML = '';
+        document.querySelector('#number-incorrect').innerHTML = '';
+
+
       questionsContainer.innerHTML = ""
       questionsContainer.innerHTML = `<h1>Welcome to Trivia Something!</h1>
       <h3>Select a category to play</h3>
       <div>
       <select>
-        <option value="science">Science</option>
         <option value="books">Books</option>
+        <option value="computers">Computers</option>
         <option value="film">Film</option>
+        <option value="general knowledge">General knowledge</option>
         <option value="history">History</option>
+        <option value="music">Music</option>
+        <option value="science">Science</option>
         <option value="sports">Sports</option>
+        <option value="television">Television</option>
+        <option value="video games">Video games</option>
       </select>
       <button id='start-game'>Start Game</button><hr>
       </div>
-      <button id='create-question'>Make new question</button>
-      <button id='edit-questions'>Edit questions</button>`
+      <button class="btn" id='create-question'>Make new question</button>
+      <button class="btn" id='edit-questions'>Edit questions</button>`
       document.querySelector('#create-question').addEventListener('click', app.renderNewForm)
       document.querySelector('#start-game').addEventListener('click', app.startGame);
       document.querySelector('#edit-questions').addEventListener('click', app.editQuestions)
@@ -157,12 +169,32 @@ class App {
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
         </select>
+        Category: <select id="category" required>
+        <option value="books">Books</option>
+        <option value="computers">Computers</option>
+        <option value="film">Film</option>
+        <option value="general knowledge">General knowledge</option>
+        <option value="history">History</option>
+        <option value="music">Music</option>
+        <option value="science">Science</option>
+        <option value="sports">Sports</option>
+        <option value="television">Television</option>
+        <option value="video games">Video games</option>
+        </select>
         <input id="submit-question" type="submit">
         </form><hr>
         <button id="back-to-main">Back</button>
         `
         document.querySelector('#new-question-form').addEventListener('submit', this.submitQuestion)
         document.querySelector('#back-to-main').addEventListener('click', this.loadFrontPage)
+    }
+
+    populateCategories() {
+        fetch(`${BASE_URL}/categories`)
+        .then(res => res.json())
+        .then(json => json.forEach(category => {
+            categoriesObject[category.name] = category.id;
+        }))
     }
 
     submitQuestion(event) {
@@ -172,8 +204,10 @@ class App {
         let newCorrectAnswer = form.querySelector('#new-correct-answer').value;
         let newIncorrectAnswers = Array.from(form.querySelectorAll('.new-incorrect-answer')).map(answer => answer.value);
         let difficulty = form.querySelector('select').value;
+        let newCategory = form.querySelector('#category').value
+        let categoryId = categoriesObject[newCategory.capitalize()];
         console.log(newQuestionContent, newCorrectAnswer, newIncorrectAnswers);
-        const data = {content: newQuestionContent, difficulty: difficulty}
+        const data = {content: newQuestionContent, difficulty: difficulty, category_id: categoryId}
         const answers = [newCorrectAnswer, ...newIncorrectAnswers]
         this.adapter.postQuestionData(data, answers);
 
@@ -182,10 +216,9 @@ class App {
     startGame(event) {
       questionsArray = [];
       let categoryName = event.target.previousElementSibling.value;
-
       app.adapter.fetchCategory(categoryName);
       console.log(questionsArray);
-      
+    
     }
 
     createQuestionsArray(json) {
@@ -231,6 +264,9 @@ class App {
         document.querySelector('#timer-container').innerHTML = "";
       } else {
         numberIncorrect += 1
+        if(numberIncorrect >= 3) {
+            this.endGame();
+        }
         document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`;
         document.querySelector('#timer-container').innerHTML = "Time's up!";
       }
@@ -291,19 +327,26 @@ class App {
       GAME OVER.
       <div>
       <select>
-        <option value="science">Science</option>
         <option value="books">Books</option>
+        <option value="computers">Computers</option>
         <option value="film">Film</option>
+        <option value="general knowledge">General knowledge</option>
         <option value="history">History</option>
+        <option value="music">Music</option>
+        <option value="science">Science</option>
         <option value="sports">Sports</option>
+        <option value="television">Television</option>
+        <option value="video games">Video games</option>
       </select>
       <button id="play-again">Play again</button>
+      <button id="main-page">Main page</button>
       </div>
       `
       document.querySelectorAll('.answer-choice').forEach(btn => {
         btn.removeEventListener('click', clickAnswer)
       })
       document.querySelector('#play-again').addEventListener('click', this.startGame)
+      document.querySelector('#main-page').addEventListener('click', this.loadFrontPage)
     }
 
 }

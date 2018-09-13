@@ -8,6 +8,8 @@ let app;
 let interval;
 let startingIndex;
 let endingIndex;
+let highScore = 0;
+let questionsArray = [];
 
 
 document.addEventListener('DOMContentLoaded', () => {

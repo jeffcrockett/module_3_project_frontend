@@ -15,3 +15,8 @@
 button.correct-answer {
     border: 5px solid green;
 }
+
+#high-score {
+    float: right;
+    margin-right: 100px;
+}

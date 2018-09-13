@@ -5,6 +5,12 @@ class Adapter {
             .then(res => res.json());
     }
 
+    fetchCategory(name) {
+         fetch(`${BASE_URL}/categories/${name}`)
+            .then(res => res.json())
+            .then(json => app.createQuestionsArray(json));
+    }
+
 
     postQuestionData(data, answerData) {
         console.log(data);

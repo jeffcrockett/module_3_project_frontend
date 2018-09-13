@@ -1,7 +1,7 @@
 class App {
     constructor() {
         this.adapter = new Adapter();
-        this.questionNumber = 52;
+        this.questionNumber = 0
         this.startGame = this.startGame.bind(this);
         this.getNextQuestion = this.getNextQuestion.bind(this);
         this.timesUp = this.timesUp.bind(this);
@@ -180,15 +180,24 @@ class App {
     }
 
     startGame(event) {
-      let categoryName = event.target.previousElementSibling.value
-      // NEED TO FIGURE OUT HOW TO HANDLE CATEGORY
-      // FETCH TO CATEGORY - NEED ID - HOW?????
-      numberCorrect = 0
-      numberIncorrect = 0
-      document.getElementById('game-over').innerHTML = "";
-      document.querySelector('#number-correct').innerHTML = `${numberCorrect} Correct`;
-      document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`;
-      this.adapter.loadQuestion(this.questionNumber).then(q => this.createQAndA(q))
+      questionsArray = [];
+      let categoryName = event.target.previousElementSibling.value;
+
+      app.adapter.fetchCategory(categoryName);
+      console.log(questionsArray);
+      
+    }
+
+    createQuestionsArray(json) {
+        questionsArray = [];
+        json.questions.forEach(q => questionsArray.push(q));
+        numberCorrect = 0
+        numberIncorrect = 0
+        document.getElementById('game-over').innerHTML = "";
+        document.querySelector('#number-correct').innerHTML = `${numberCorrect} Correct`;
+        document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`;
+        this.createQAndA(questionsArray[this.questionNumber])
+
     }
 
 
@@ -235,7 +244,7 @@ class App {
 
     getNextQuestion() {
         this.questionNumber++;
-        this.adapter.loadQuestion(this.questionNumber).then(question => this.createQAndA(question));
+        this.createQAndA(questionsArray[this.questionNumber]);
     }
 
     showAnswer(event) {
@@ -274,7 +283,23 @@ class App {
 
     endGame() {
       clearInterval(interval)
-      document.querySelector('#game-over').innerHTML = `GAME OVER.<button id="play-again">Play again</button>`
+      if(numberCorrect > highScore) {
+          highScore = numberCorrect;
+      }
+      document.querySelector('#high-score-number').innerHTML = highScore;
+      document.querySelector('#game-over').innerHTML = `
+      GAME OVER.
+      <div>
+      <select>
+        <option value="science">Science</option>
+        <option value="books">Books</option>
+        <option value="film">Film</option>
+        <option value="history">History</option>
+        <option value="sports">Sports</option>
+      </select>
+      <button id="play-again">Play again</button>
+      </div>
+      `
       document.querySelectorAll('.answer-choice').forEach(btn => {
         btn.removeEventListener('click', clickAnswer)
       })

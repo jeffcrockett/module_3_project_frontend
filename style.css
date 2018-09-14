@@ -18,6 +18,10 @@
     padding: 15px;
 }
 
+input[type="radio"] {
+    display: none;
+}
+
 div.jumbotron {
     background: turquoise;
 }

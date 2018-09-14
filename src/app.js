@@ -76,40 +76,19 @@ class App {
 
     renderEditForm(event) {
         const div = event.target.parentElement;
-        const questionContent = event.target.parentElement.querySelector('span').innerText;
-        console.log(event.target.parentElement.querySelectorAll('.answer-choice'))
-        const answers = Array.from(event.target.parentElement.querySelectorAll('.answer-choice')).map(answer => answer.innerText)
-        const answerIds = Array.from(event.target.parentElement.querySelectorAll('.answer-choice')).map(answer => (answer.id.split('-')[1]))
-        console.log(questionContent);
-        console.log(answers);
-        console.log(answerIds);
+        const question = Question.all.find(q => q.id === parseInt(event.target.id.split('-')[2]))
         div.innerHTML = '';
+        const answersHtml = question.answers.map((answer, index) => {
+            return `<div class="edit-answer">
+            ${index === 0 ? 'Correct:   ' : 'Incorrect: '}
+        <input id="answer-${answer.id}-text" type="text" value="${answer.content}">
+        <input id="answer-${answer.id}" value="${answer.content}" name="correct" type="radio" ${answer.correct ? 'checked' : ''}>
+        </div>`
+        }).join('') + `<br><input class="btn" type="submit"></form>`
         div.innerHTML += `<form id="edit-${div.id}">
         <label>Question: </label><br>
-        <input id="edit-question-content" type="text" size="100" value="${questionContent}"><br>
-        <label>Answers: (select correct)</label><br>
-        <div class="edit-answer">
-        <input id="answer-${answerIds[0]}-text" type="text" value="${answers[0]}">
-        <input id="answer-${answerIds[0]}"value="${answers[0]}" name="correct" type="radio" checked>
-        </div>
-        <br>
-        <div class="edit-answer">
-        <input id="answer-${answerIds[1]}-text"type="text" value="${answers[1]}">
-        <input id="answer-${answerIds[1]}" value="${answers[1]}" name="correct" type="radio">
-        </div>
-        <br>
-        <div class="edit-answer">
-        <input id="answer-${answerIds[2]}-text" type="text" value="${answers[2]}">
-        <input id="answer-${answerIds[2]}" value="${answers[2]}" name="correct" type="radio">
-        </div>
-        <br>
-        <div class="edit-answer">
-        <input id="answer-${answerIds[3]}-text" type="text" value="${answers[3]}">
-        <input id="answer-${answerIds[3]}" value="${answers[3]}"name="correct" type="radio">
-        </div>
-        <br>
-        <input class="btn" type="submit">
-        </form>`
+        <input id="edit-question-content" type="text" size="100" value="${question.content}"><br>
+        <label>Answers:</label><br>${answersHtml}`
         document.querySelector(`#edit-${div.id}`).addEventListener('submit', app.handleEditFormSubmit);
     }
 

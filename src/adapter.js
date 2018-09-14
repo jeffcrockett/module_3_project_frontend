@@ -79,7 +79,8 @@ class Adapter {
             // debugger;
             targetQuestion.content = json.content
             targetQuestion.answers.forEach(answer => {
-                if(answer.correct) {
+                // debugger;
+                if(answer.id === Object.values(correctAnswer)[0]) {
                     answer.content = Object.keys(correctAnswer)[0]
                 }
                 else {

@@ -12,7 +12,7 @@ class Question {
         questionsContainer.innerHTML += `
         <div class="row"><div class="col-md-9 col-sm-12"><ul><span class="question">${this.content}</span><br>
     ${this.answers.randomize().map(answer => `<br><div><button class='btn btn-light answer-choice' data-correct="${answer.correct}" >${answer.content}</button></div>`).join('')}
-    </ul></div><div class="col-md-3 col-sm-12"><div id="number-correct">${numberCorrect} Correct</div><br><div id="number-incorrect">${numberIncorrect} Incorrect</div></div><button id="next-question" type="button" class="btn btn-secondary">Next</button>
+    </ul></div><div class="col-md-3 col-sm-12"><div id="number-correct">${numberCorrect} Correct</div><br><div id="number-incorrect"><div id="wrong-1">&#10006;</div><div id="wrong-2">&#10006;</div><div id="wrong-3">&#10006;</div></div></div><button id="next-question" type="button" class="btn btn-secondary">Next</button>
     </div>
     </div>`
         questionsContainer.querySelectorAll('.answer-choice').forEach(btn => {

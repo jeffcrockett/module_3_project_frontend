@@ -16,8 +16,6 @@ let categoriesObject = {};
 document.addEventListener('DOMContentLoaded', () => {
     app = new App();
     app.populateCategories();
-
-
     questionsContainer = document.getElementById('questions-container');
     clickAnswer = app.showAnswer
     answerClicked = false
@@ -27,9 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('dom content loaded')
     app.loadFrontPage()
 })
-
-
-
 
 Array.prototype.randomize = function() {
     var m = this.length, t, i;

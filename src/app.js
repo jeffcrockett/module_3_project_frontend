@@ -17,7 +17,7 @@ class App {
       document.querySelector('#game-over').innerHTML = '';
       document.querySelector('#timer-container').innerHTML = '';
       questionsContainer.innerHTML = ""
-      questionsContainer.innerHTML = `<h1 id="title">Welcome to Trivia Something!</h1>
+      questionsContainer.innerHTML = `<h1 id="title">Welcome to Flatiron Trivia!</h1>
       <h3>Select a category to play</h3>
       <div>
       <select>
@@ -210,6 +210,18 @@ class App {
         })
         question.render();
         this.startTimer();
+        if (numberIncorrect === 0) {
+          document.querySelector('#wrong-1').style.opacity = '0.1';
+          document.querySelector('#wrong-2').style.opacity = '0.1';
+          document.querySelector('#wrong-3').style.opacity = '0.1';
+        }
+        if (numberIncorrect === 1) {
+          document.querySelector('#wrong-2').style.opacity = '0.1';
+          document.querySelector('#wrong-3').style.opacity = '0.1';
+        }
+        if (numberIncorrect === 2) {
+          document.querySelector('#wrong-3').style.opacity = '0.1';
+        }
     }
 
     startTimer() {
@@ -236,7 +248,7 @@ class App {
         if(numberIncorrect >= 3) {
             this.endGame();
         }
-        document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`;
+        document.querySelector(`#wrong-${numberIncorrect}`).style.opacity = 1
         document.querySelector('#timer-container').innerHTML = "Time's up!";
       }
       document.querySelectorAll('.answer-choice').forEach(btn => {
@@ -260,7 +272,7 @@ class App {
     }
     else {
         numberIncorrect++
-        document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`
+        document.querySelector(`#wrong-${numberIncorrect}`).style.opacity = 1
         event.target.parentElement.querySelectorAll('button').forEach(btn => {
             if (btn.dataset.correct === 'true') {
                 btn.classList.add('correct-answer');
@@ -288,7 +300,6 @@ class App {
       clearInterval(interval)
       if(numberCorrect > highScore) {
           highScore = numberCorrect;
-          alert("New high score!")
       }
       document.querySelector('#high-score-number').innerHTML = highScore;
       document.querySelector('#game-over').innerHTML = `

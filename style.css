@@ -70,6 +70,7 @@ button.correct-answer {
     padding: 20px;
     text-align: center;
     width: fit-content;
+    font-size: xx-large;
 }
 
 .alert-correct {
@@ -118,6 +119,10 @@ button.answer-choice {
 .question {
   font-size: x-large;
 }
+
+/* #wrong-1, #wrong-2, #wrong-3 {
+  opacity: 0.1;
+} */
 
 * {
   font-family: 'Raleway', sans-serif;

@@ -12,16 +12,12 @@ class App {
     }
 
     loadFrontPage() {
-        console.log(categoriesObject);
-        document.querySelector('#game-over').style.opacity = '0';
-        document.querySelector('#game-over').innerHTML = '';
-        document.querySelector('#timer-container').innerHTML = '';
-        document.querySelector('#number-correct').innerHTML = '';
-        document.querySelector('#number-incorrect').innerHTML = '';
-
-
+      document.querySelector('#game-over').style.opacity = '0';
+      document.querySelector('#timer-container').style.opacity = '0';
+      document.querySelector('#game-over').innerHTML = '';
+      document.querySelector('#timer-container').innerHTML = '';
       questionsContainer.innerHTML = ""
-      questionsContainer.innerHTML = `<h1>Welcome to Trivia Something!</h1>
+      questionsContainer.innerHTML = `<h1 id="title">Welcome to Trivia Something!</h1>
       <h3>Select a category to play</h3>
       <div>
       <select>
@@ -189,6 +185,7 @@ class App {
 
     startGame(event) {
       document.querySelector('#game-over').style.opacity = '0';
+      document.querySelector('#timer-container').style.opacity = '1';
       questionsArray = [];
       let categoryName = event.target.previousElementSibling.value;
       app.adapter.fetchCategory(categoryName);
@@ -202,8 +199,6 @@ class App {
         numberCorrect = 0
         numberIncorrect = 0
         document.getElementById('game-over').innerHTML = "";
-        document.querySelector('#number-correct').innerHTML = `${numberCorrect} Correct`;
-        document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`;
         this.createQAndA(questionsArray[this.questionNumber])
     }
 
@@ -261,15 +256,11 @@ class App {
     if (event.target.dataset.correct === 'true') {
         numberCorrect++
         document.querySelector('#number-correct').innerHTML = `${numberCorrect} Correct`
-        event.target.innerHTML += `<div class="alert alert-success">
-                <strong>Well done!</strong></div>`
-
+        event.target.parentElement.innerHTML += `<span class="alert-correct">Well done!</span>`
     }
     else {
         numberIncorrect++
         document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`
-        event.target.innerHTML += `<div class="alert alert-danger">
-                <strong>Wrong!</strong></div>`
         event.target.parentElement.querySelectorAll('button').forEach(btn => {
             if (btn.dataset.correct === 'true') {
                 btn.classList.add('correct-answer');
@@ -279,6 +270,7 @@ class App {
           app.endGame()
           return
         }
+        event.target.parentElement.innerHTML += `<span class="alert-incorrect">Wrong!</span>`
       }
     app.changeEventListeners()
     answerClicked = true

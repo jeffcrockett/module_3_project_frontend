@@ -8,6 +8,7 @@
     position: absolute;
 
 } */
+
 .btn-success {
     margin-left: 20px;
 }
@@ -16,6 +17,7 @@
     border: 1px solid black;
     margin-bottom: 25px;
     padding: 15px;
+    font-family: 'Raleway', sans-serif;
 }
 
 div.jumbotron {
@@ -34,7 +36,7 @@ div#game-over {
 }
 
 button.correct-answer {
-    border: 5px solid green;
+    background: lawngreen;
 }
 
 #high-score, #timer-container {
@@ -43,7 +45,80 @@ button.correct-answer {
 }
 
 #timer-container {
-    font-size: x-large;
-    padding: 8px;
-    border-radius: 50%;
+  font-size: large;
+  padding: 8px;
+  margin-top: 10px;
+  background: white;
+  border: 5px solid hotpink;
+  width: 133px;
+  height: 54px;
+  text-align: center;
+}
+
+#number-correct {
+    background: lawngreen;
+    border: 2px solid white;
+    padding: 20px;
+    text-align: center;
+    width: fit-content;
+    margin-top: 20px;
+}
+
+#number-incorrect {
+    background: hotpink;
+    border: 2px solid white;
+    padding: 20px;
+    text-align: center;
+    width: fit-content;
+}
+
+.alert-correct {
+  margin-left: 5px;
+  background: lawngreen;
+  padding: 10px;
+  border: 3px solid white;
+}
+
+.alert-incorrect {
+  margin-left: 5px;
+  background: hotpink;
+  padding: 10px;
+  border: 3px solid white;
+}
+
+#next-question {
+  margin-left: 55px;
+  margin-top: 25px;
+  background: black;
+}
+
+#start-game {
+  color: black;
+  background: lawngreen;
+  border: 1px solid black;
+}
+
+#create-question, #edit-questions {
+  border: 3px solid hotpink;
+}
+
+#title {
+  background: white;
+  padding: 20px;
+  width: fit-content;
+  border: 3px solid black;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+button.answer-choice {
+  border: 3px solid white;
+}
+
+.question {
+  font-size: x-large;
+}
+
+* {
+  font-family: 'Raleway', sans-serif;
 }

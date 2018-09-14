@@ -8,12 +8,11 @@ class Question {
     }
 
     render() {
-        // let app = new App();
         questionsContainer.innerHTML = '';
         questionsContainer.innerHTML += `
-        <ul>${this.content}<br>
-    ${this.answers.randomize().map(answer => `<br><button class='btn btn-light answer-choice' data-correct="${answer.correct}" >${answer.content}</button><br>`).join('')}
-    </ul><button id="next-question" type="button" class="btn btn-secondary">Next</button>
+        <div class="row"><div class="col-md-9 col-sm-12"><ul><span class="question">${this.content}</span><br>
+    ${this.answers.randomize().map(answer => `<br><div><button class='btn btn-light answer-choice' data-correct="${answer.correct}" >${answer.content}</button></div>`).join('')}
+    </ul></div><div class="col-md-3 col-sm-12"><div id="number-correct">${numberCorrect} Correct</div><br><div id="number-incorrect">${numberIncorrect} Incorrect</div></div><button id="next-question" type="button" class="btn btn-secondary">Next</button>
     </div>
     </div>`
         questionsContainer.querySelectorAll('.answer-choice').forEach(btn => {
@@ -23,7 +22,6 @@ class Question {
 
     renderEditable(div) {
         if(div) {
-            // debugger;
             div.innerHTML = '';
             div.innerHTML += `<span>${this.content}</span>
         <button id="edit-question-${this.id}" data-question-id="${this.id}" class="btn edit-button">Edit</button>
@@ -39,20 +37,7 @@ class Question {
         }
         document.querySelector(`#edit-question-${this.id}`).addEventListener('click', app.renderEditForm);
         document.querySelector(`#delete-question-${this.id}`).addEventListener('click', app.adapter.deleteQuestion);
-        
-        // debugger;
-    
     }
-
-
-
-//     addClickEvents() {
-//     let app = new App();
-//     this.answers.forEach(answer => {
-//         answer.addEventListener('click', app.showAnswer)
-//     })
-// }
-
 }
 
 Question.all = [];

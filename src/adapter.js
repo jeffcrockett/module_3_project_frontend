@@ -44,6 +44,7 @@ class Adapter {
                 body: JSON.stringify(dData)
             }).then(res => res.json()).then(json => console.log(json));
         })
+        alert('Successfully submitted')
         app.loadFrontPage();
 
     }
@@ -76,17 +77,18 @@ class Adapter {
         }).then(res => res.json()).then(json => {
             this.patchAnswers(correctAnswer, incorrectAnswers)
             let targetQuestion = Question.all.find(q => q.id === parseInt(questionId));
-            // debugger;
             targetQuestion.content = json.content
             targetQuestion.answers.forEach(answer => {
                 // debugger;
-                if(answer.id === Object.values(correctAnswer)[0]) {
+                if(answer.id === parseInt(Object.values(correctAnswer)[0])) {
                     answer.content = Object.keys(correctAnswer)[0]
+                    answer.correct = true
                 }
                 else {
                     Object.entries(incorrectAnswers).forEach(incorrectAnswer => {
                         if(parseInt(incorrectAnswer[1]) === answer.id){
                             answer.content = incorrectAnswer[0]
+                            answer.correct = false
                         }
                     })
                 }

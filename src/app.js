@@ -78,9 +78,8 @@ class App {
         const div = event.target.parentElement;
         const question = Question.all.find(q => q.id === parseInt(event.target.id.split('-')[2]))
         div.innerHTML = '';
-        const answersHtml = question.answers.map((answer, index) => {
+        const answersHtml = question.answers.map((answer) => {
             return `<div class="edit-answer">
-            ${index === 0 ? 'Correct:   ' : 'Incorrect: '}
         <input id="answer-${answer.id}-text" type="text" value="${answer.content}">
         <input id="answer-${answer.id}" value="${answer.content}" name="correct" type="radio" ${answer.correct ? 'checked' : ''}>
         </div>`
@@ -127,12 +126,7 @@ class App {
         question.renderEditable()
     }
 
-    someFunction() {
-        console.log('clicked');
-    }
-
     renderNewForm() {
-        console.log('rendering new form...')
         questionsContainer.innerHTML = '';
         questionsContainer.innerHTML += `
         <h1>Create a new trivia question</h1>
@@ -195,24 +189,22 @@ class App {
 
     startGame(event) {
       document.querySelector('#game-over').style.opacity = '0';
-
       questionsArray = [];
       let categoryName = event.target.previousElementSibling.value;
       app.adapter.fetchCategory(categoryName);
       console.log(questionsArray);
-    
     }
 
     createQuestionsArray(json) {
         questionsArray = [];
         json.questions.forEach(q => questionsArray.push(q));
+        questionsArray.randomize()
         numberCorrect = 0
         numberIncorrect = 0
         document.getElementById('game-over').innerHTML = "";
         document.querySelector('#number-correct').innerHTML = `${numberCorrect} Correct`;
         document.querySelector('#number-incorrect').innerHTML = `${numberIncorrect} Incorrect`;
         this.createQAndA(questionsArray[this.questionNumber])
-
     }
 
 
@@ -300,10 +292,11 @@ class App {
     }
 
     endGame() {
-        document.querySelector('#game-over').style.opacity = '1';
+      document.querySelector('#game-over').style.opacity = '1';
       clearInterval(interval)
       if(numberCorrect > highScore) {
           highScore = numberCorrect;
+          alert("New high score!")
       }
       document.querySelector('#high-score-number').innerHTML = highScore;
       document.querySelector('#game-over').innerHTML = `

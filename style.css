@@ -18,10 +18,6 @@
     padding: 15px;
 }
 
-input[type="radio"] {
-    display: none;
-}
-
 div.jumbotron {
     background: turquoise;
 }
@@ -51,6 +47,3 @@ button.correct-answer {
     padding: 8px;
     border-radius: 50%;
 }
-
-
-
